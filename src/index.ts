@@ -1,3 +1,20 @@
-const age: number = 345093845093845
+import { ApolloServer, gql } from "apollo-server"
 
-console.log("age is: ", age)
+const typeDefs = gql`
+  type Query {
+    hello: String!
+  }
+`
+
+const resolvers = {
+  Query: {
+    hello: () => "World!",
+  },
+}
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+})
+
+server.listen().then(({ url }) => console.log(`🚀 Server ready on ${url}`))
