@@ -10,6 +10,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// note: -----------------------------------------------
+// to create the database with these tables, we do:
+//  npx prisma db push
+// to visualise our database:
+// npx prisma studio
+
 model Post {
   id        Int      @id @default(autoincrement())
   title     String
