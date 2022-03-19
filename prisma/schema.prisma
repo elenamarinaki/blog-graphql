@@ -12,9 +12,9 @@ datasource db {
 
 // note: -----------------------------------------------
 // to create the database with these tables, we do:
-//  npx prisma db push
+// note: npx prisma db push
 // to visualise our database:
-// npx prisma studio
+// note: npx prisma studio
 
 model Post {
   id        Int      @id @default(autoincrement())
@@ -36,7 +36,8 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Post      Post[]
+  post      Post[]
+  profile   Profile?
 }
 
 model Profile {
@@ -44,5 +45,9 @@ model Profile {
   bio       String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId    Int
+  userId    Int      @unique
+  // once we created this one, the "Profile Profile[]" was created
+  // in the User table, which again reflects the relationship
+  // both ways
+  user      User     @relation(fields: [userId], references: [id])
 }
