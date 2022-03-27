@@ -16,6 +16,7 @@ interface PostPayloadType {
 }
 
 export const Mutation = {
+  // [x] ------------------------------------  CREATE POST
   postCreate: async (
     _: any,
     { post }: PostArgs,
@@ -44,6 +45,7 @@ export const Mutation = {
       }),
     }
   },
+  // [x] ------------------------------------  UPDATE POST
   postUpdate: async (
     _: any,
     { postId, post }: { postId: string; post: PostArgs["post"] },
@@ -68,6 +70,7 @@ export const Mutation = {
       },
     })
 
+    // what happens if post DOES NOT exist...
     if (!existingPost) {
       return {
         userErrors: [
@@ -97,6 +100,42 @@ export const Mutation = {
           id: Number(postId),
         },
       }),
+    }
+  },
+  // [x] ------------------------------------  DELETE POST
+  postDelete: async (
+    _: any,
+    { postId }: { postId: string },
+    { prisma }: Context
+  ): Promise<PostPayloadType> => {
+    // we have to check if the post exists
+    const post = await prisma.post.findUnique({
+      where: {
+        id: Number(postId),
+      },
+    })
+
+    // what happens if post DOES NOT exist...
+    if (!post) {
+      return {
+        userErrors: [
+          {
+            message: "Post does not exist!",
+          },
+        ],
+        post: null,
+      }
+    }
+
+    await prisma.post.delete({
+      where: {
+        id: Number(postId),
+      },
+    })
+
+    return {
+      userErrors: [],
+      post,
     }
   },
 }
