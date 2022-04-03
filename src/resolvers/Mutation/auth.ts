@@ -51,6 +51,18 @@ export const authResolvers = {
       }
     }
 
+    // ::----------------------------- simple name & bio check
+    if (!name || !bio) {
+      return {
+        userErrors: [
+          {
+            message: "Invalid name or bio",
+          },
+        ],
+        user: null,
+      }
+    }
+
     return {
       userErrors: [],
       user: null,
