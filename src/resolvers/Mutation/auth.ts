@@ -52,6 +52,9 @@ export const authResolvers = {
       }
     }
 
+    // :: hashing the password
+    const hashedPassword = await bcrypt.hash(password, 10)
+
     // ::----------------------------- simple name & bio check
     if (!name || !bio) {
       return {
@@ -63,6 +66,14 @@ export const authResolvers = {
         user: null,
       }
     }
+
+    await prisma.user.create({
+      data: {
+        email,
+        name,
+        password: hashedPassword,
+      },
+    })
 
     return {
       userErrors: [],
