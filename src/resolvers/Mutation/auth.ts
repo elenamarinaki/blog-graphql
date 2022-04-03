@@ -1,5 +1,6 @@
 import { Context } from "../../index"
 import validator from "validator"
+import bcrypt from "bcryptjs"
 
 interface SignupArgs {
   email: string
