@@ -1,4 +1,5 @@
 import { Context } from "../../index"
+import validator from "validator"
 
 interface SignupArgs {
   email: string

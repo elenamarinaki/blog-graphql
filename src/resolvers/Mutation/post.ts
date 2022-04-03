@@ -1,6 +1,5 @@
 import { Post, Prisma } from "@prisma/client"
 import { Context } from "../../index"
-import validator from "validator"
 
 interface PostArgs {
   post: {
