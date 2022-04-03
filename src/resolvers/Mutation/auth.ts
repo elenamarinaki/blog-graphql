@@ -7,10 +7,44 @@ interface SignupArgs {
   bio: string
   password: string
 }
+
+interface UserPayload {
+  userErrors: {
+    message: string
+  }[]
+  user: null
+}
+
 export const authResolvers = {
-  signup: (
+  signup: async (
     _: any,
     { email, name, password, bio }: SignupArgs,
     { prisma }: Context
-  ) => {},
+  ): Promise<UserPayload> => {
+    const isEmail = validator.isEmail(email)
+
+    if (!isEmail) {
+      return {
+        userErrors: [
+          {
+            message: "Invalid email",
+          },
+        ],
+        user: null,
+      }
+    }
+
+    return {
+      userErrors: [],
+      user: null,
+    }
+
+    // return prisma.user.create({
+    //   data: {
+    //     email,
+    //     name,
+    //     password,
+    //   },
+    // })
+  },
 }
