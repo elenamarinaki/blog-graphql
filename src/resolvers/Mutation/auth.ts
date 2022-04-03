@@ -21,6 +21,7 @@ export const authResolvers = {
     { email, name, password, bio }: SignupArgs,
     { prisma }: Context
   ): Promise<UserPayload> => {
+    // ::----------------------------- EMAIL validation
     const isEmail = validator.isEmail(email)
 
     if (!isEmail) {
@@ -28,6 +29,22 @@ export const authResolvers = {
         userErrors: [
           {
             message: "Invalid email",
+          },
+        ],
+        user: null,
+      }
+    }
+
+    // ::----------------------------- PASSWORD validation
+    const isValidPassword = validator.isLength(password, {
+      min: 5,
+    })
+
+    if (!isValidPassword) {
+      return {
+        userErrors: [
+          {
+            message: "Invalid password",
           },
         ],
         user: null,
