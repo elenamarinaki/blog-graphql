@@ -69,6 +69,7 @@ export const authResolvers = {
       }
     }
 
+    // :: creating the USER
     const user = await prisma.user.create({
       data: {
         email,
@@ -77,6 +78,15 @@ export const authResolvers = {
       },
     })
 
+    // :: creating the USER PROFILE
+    await prisma.profile.create({
+      data: {
+        bio,
+        userId: user.id,
+      },
+    })
+
+    // :: creating the TOKEN
     const token = await JWT.sign(
       {
         userId: user.id,
