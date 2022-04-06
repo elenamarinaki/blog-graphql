@@ -5,10 +5,18 @@ import JWT from "jsonwebtoken"
 import { JSON_SIGNATURE } from "../../keys"
 
 interface SignupArgs {
-  email: string
+  credentials: {
+    email: string
+    password: string
+  }
   name: string
   bio: string
-  password: string
+}
+interface SigninArgs {
+  credentials: {
+    email: string
+    password: string
+  }
 }
 
 interface UserPayload {
@@ -21,10 +29,12 @@ interface UserPayload {
 export const authResolvers = {
   signup: async (
     _: any,
-    { email, name, password, bio }: SignupArgs,
+    { credentials, name, bio }: SignupArgs,
     { prisma }: Context
   ): Promise<UserPayload> => {
     // ::----------------------------- EMAIL validation
+    const { email, password } = credentials
+
     const isEmail = validator.isEmail(email)
 
     if (!isEmail) {
@@ -102,5 +112,8 @@ export const authResolvers = {
       userErrors: [],
       token,
     }
+  },
+  signin: (_: any, { credentials }: SigninArgs, { prisma }: Context) => {
+    const { email, password } = credentials
   },
 }
