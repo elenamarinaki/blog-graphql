@@ -136,8 +136,25 @@ export const postResolvers = {
   postDelete: async (
     _: any,
     { postId }: { postId: string },
-    { prisma }: Context
+    { prisma, userInfo }: Context
   ): Promise<PostPayloadType> => {
+    if (!userInfo) {
+      return {
+        userErrors: [
+          {
+            message: "You must authenticate first!",
+          },
+        ],
+        post: null,
+      }
+    }
+    const error = await canUserMutatePost({
+      userId: userInfo.userId,
+      postId: Number(postId),
+      prisma,
+    })
+
+    if (error) return error
     // we have to check if the post exists
     const post = await prisma.post.findUnique({
       where: {
