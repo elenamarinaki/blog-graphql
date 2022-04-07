@@ -185,4 +185,76 @@ export const postResolvers = {
       post,
     }
   },
+  // [x] ------------------------------------  PUBLISH POST
+  postPublish: async (
+    _: any,
+    { postId }: { postId: string },
+    { prisma, userInfo }: Context
+  ): Promise<PostPayloadType> => {
+    if (!userInfo) {
+      return {
+        userErrors: [
+          {
+            message: "You must authenticate first!",
+          },
+        ],
+        post: null,
+      }
+    }
+    const error = await canUserMutatePost({
+      userId: userInfo.userId,
+      postId: Number(postId),
+      prisma,
+    })
+
+    if (error) return error
+
+    return {
+      userErrors: [],
+      post: prisma.post.update({
+        where: {
+          id: Number(postId),
+        },
+        data: {
+          published: true,
+        },
+      }),
+    }
+  },
+  // [x] ------------------------------------  UN-PUBLISH POST
+  postUnpublish: async (
+    _: any,
+    { postId }: { postId: string },
+    { prisma, userInfo }: Context
+  ): Promise<PostPayloadType> => {
+    if (!userInfo) {
+      return {
+        userErrors: [
+          {
+            message: "You must authenticate first!",
+          },
+        ],
+        post: null,
+      }
+    }
+    const error = await canUserMutatePost({
+      userId: userInfo.userId,
+      postId: Number(postId),
+      prisma,
+    })
+
+    if (error) return error
+
+    return {
+      userErrors: [],
+      post: prisma.post.update({
+        where: {
+          id: Number(postId),
+        },
+        data: {
+          published: false,
+        },
+      }),
+    }
+  },
 }
