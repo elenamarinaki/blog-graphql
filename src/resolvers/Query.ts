@@ -14,4 +14,15 @@ export const Query = {
       orderBy: [{ createdAt: "desc" }],
     })
   },
+  profile: (
+    _: any,
+    { userId }: { userId: string },
+    { prisma, userInfo }: Context
+  ) => {
+    return prisma.profile.findUnique({
+      where: {
+        userId: Number(userId),
+      },
+    })
+  },
 }
