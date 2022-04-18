@@ -5,7 +5,7 @@ interface UserParentType {
 }
 
 export const User = {
-  user: (parent: UserParentType, __: any, { prisma, userInfo }: Context) => {
+  posts: (parent: UserParentType, __: any, { prisma, userInfo }: Context) => {
     const isOwnProfile = parent.id === userInfo?.userId
 
     if (isOwnProfile) {
