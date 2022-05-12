@@ -29,7 +29,7 @@ export default function Post({
       <div className="Post__header-container">
         <h2>{title}</h2>
         <h4>
-          Created At {`${formatedDate}`.split(" ").splice(0, 3).join(" ")} by{" "}
+          Created At {`${formatedDate}`.split(" ").splice(0, 4).join(" ")} by{" "}
           {user}
         </h4>
       </div>

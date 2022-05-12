@@ -1,6 +1,6 @@
 import React from "react"
 import Post from "../../components/Post/Post"
-import { gql } from "@apollo/client"
+import { gql, useQuery } from "@apollo/client"
 
 const GET_POSTS = gql`
   query {
@@ -16,5 +16,30 @@ const GET_POSTS = gql`
 `
 
 export default function Posts() {
-  return <div></div>
+  const { data, error, loading } = useQuery(GET_POSTS)
+
+  if (error) return <div>⚠️ Error Page</div>
+
+  if (loading) return <div>🐡 Spinner ...</div>
+
+  // log
+  console.log("QUERY results are: ", data)
+
+  const { posts } = data
+
+  return (
+    <div>
+      {posts.map((post) => {
+        return (
+          <Post
+            title={post.title}
+            content={post.content}
+            date={post.createdAt}
+            id={post.id}
+            user={post.user.name}
+          />
+        )
+      })}
+    </div>
+  )
 }
