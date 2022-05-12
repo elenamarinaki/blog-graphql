@@ -22,9 +22,6 @@ export default function Posts() {
 
   if (loading) return <div>🐡 Spinner ...</div>
 
-  // log
-  console.log("QUERY results are: ", data)
-
   const { posts } = data
 
   return (
@@ -32,6 +29,7 @@ export default function Posts() {
       {posts.map((post) => {
         return (
           <Post
+            key={post.id}
             title={post.title}
             content={post.content}
             date={post.createdAt}
